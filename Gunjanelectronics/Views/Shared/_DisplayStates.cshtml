@@ -1,0 +1,11 @@
+﻿@model Gunjanelectronics.state
+
+<option value="">--Select States--</option>
+
+@if(ViewBag.Slist!=null)
+{
+    foreach(var s in ViewBag.Slist)
+    {
+        <option value="@s.Value">@s.Text</option>
+    }
+}

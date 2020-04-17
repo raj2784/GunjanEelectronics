@@ -1,0 +1,115 @@
+﻿@model Gunjanelectronics.Models.AddcustomerModel
+@{
+    ViewBag.Title = "Addcustomer";
+}
+
+<h2>Add Customer</h2>
+<div class="row">
+    <div class="col-lg-auto">
+
+        @ViewBag.Success
+        @using (Html.BeginForm("Addcustomer", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label><b>Customer Id:</b></label>
+                @Html.TextBoxFor(i => i.Customerid, new { @class = "form-control", placeholder = "Customer Id", id = "textname" })
+                @Html.ValidationMessageFor(i => i.Customerid, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label><b>Name:</b></label>
+                @Html.TextBoxFor(i => i.Name, new { @class = "form-control", placeholder = "Name", id = "textname" })
+                @Html.ValidationMessageFor(i => i.Name, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label><b>Dob:</b></label>
+                @Html.TextBoxFor(i => i.Dob, new { @class = "form-control", placeholder = "Dob", id = "textname", type = "date" })
+                @Html.ValidationMessageFor(i => i.Dob, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label><b>Counrty:</b></label>
+                @if (ViewBag.CountryList != null)
+                {
+                    @Html.DropDownListFor(i => i.countryid, ViewBag.CountryList as SelectList, "--Select Cournty--", new { @class = "form-control" })
+                }
+            </div>
+            <div class="form-group">
+                <label><b>States:</b></label>
+                @Html.DropDownListFor(i => i.stateid, new SelectList(""), "--Select States--", new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label><b>City:</b></label>
+                @Html.DropDownListFor(i => i.cityid, new SelectList(""), "--Select Cities--", new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label><b>Address:</b></label>
+                @Html.TextBoxFor(i => i.Address, new { @class = "form-control", placeholder = "Address", id = "textname" })
+                @Html.ValidationMessageFor(i => i.Address, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label><b>Email:</b></label>
+                @Html.TextBoxFor(i => i.Email, new { @class = "form-control", placeholder = "Email", id = "textname" })
+                @Html.ValidationMessageFor(i => i.Email, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label><b>Mobile:</b></label>
+                @Html.TextBoxFor(i => i.Mobile, new { @class = "form-control", placeholder = "Mobile", id = "textname" })
+                @Html.ValidationMessageFor(i => i.Mobile, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label><b>Would you like to participate in Survey:</b></label><br />
+                <div class="form-check">
+                    @Html.RadioButtonFor(i => i.wouldyouliketoparticipateinSurvey, "Yes", new { @class = "form-check-input" })
+                    <lable>Yes</lable><br />
+                </div>
+
+                <div class="form-check">
+                    @Html.RadioButtonFor(i => i.wouldyouliketoparticipateinSurvey, "No", new { @class = "form-check-input" })
+                    <label>No</label><br />
+                </div>
+ 
+            </div>
+
+            <input type="submit" value="Submit" class="btn btn-dark" />
+        }
+
+    </div>
+
+</div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#countryid").change(function () {
+            var countryid = $(this).val();          
+            $.ajax({
+                type: "post",
+                url: "/home/GetStateList?countryid=" + countryid,
+                contentsType: "html",
+                success: function (response) {
+                    console.log(response);
+                    $("#stateid").empty();
+                    $("#stateid").append(response);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+
+            })
+        })
+        $("#stateid").change(function () {
+            var stateid = $(this).val();
+            $.ajax({
+                type: "post",
+                url: "/home/GetCitiList?stateid=" + stateid,
+                contentsType: "html",
+                success: function (response) {
+                    debugger
+                    $("#cityid").empty();
+                    $("#cityid").append(response);
+                }
+            })
+        })
+    })
+</script>
+
+

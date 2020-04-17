@@ -1,0 +1,11 @@
+﻿@model Gunjanelectronics.city
+
+<option value="">--Select Cities--</option>
+
+@if (ViewBag.Clist != null)
+{
+    foreach (var c in ViewBag.Clist)
+    {
+        <option value="@c.Value">@c.Text</option>
+    }
+}
